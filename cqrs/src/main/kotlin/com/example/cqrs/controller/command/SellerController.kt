@@ -8,18 +8,19 @@ import com.example.cqrs.service.command.dto.CreateSellerParam
 import com.example.cqrs.service.command.dto.SellerResult
 import com.example.cqrs.service.command.dto.UpdateSellerParam
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/v1/sellers")
 class SellerController(
     private val sellerService: SellerService
 ) {
+    @GetMapping
+    fun getSellers() =
+        ResponseEntity.ok(
+            sellerService.getSellers().map { it.toResponse() }
+        )
+
     @PostMapping
     fun createSeller(@RequestBody request: CreateSellerRequest) =
         ResponseEntity.ok(

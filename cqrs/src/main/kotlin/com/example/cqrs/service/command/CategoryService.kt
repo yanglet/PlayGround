@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional
 class CategoryService(
     private val categoryRepository: CategoryRepository
 ) {
+    @Transactional(readOnly = true)
+    fun getCategories(): Iterable<CategoryResult> =
+        categoryRepository.findAll().map { it.toDto() }
+
     fun createCategory(param: CreateCategoryParam): CategoryResult =
         categoryRepository.save(
             Category(categoryName = param.categoryName)

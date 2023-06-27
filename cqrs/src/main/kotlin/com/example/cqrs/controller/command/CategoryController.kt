@@ -8,6 +8,7 @@ import com.example.cqrs.service.command.dto.CategoryResult
 import com.example.cqrs.service.command.dto.CreateCategoryParam
 import com.example.cqrs.service.command.dto.UpdateCategoryParam
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryController(
     private val categoryService: CategoryService
 ) {
+    @GetMapping
+    fun getCategories() =
+        ResponseEntity.ok(
+            categoryService.getCategories().map { it.toResponse() }
+        )
+
     @PostMapping
     fun createCategory(@RequestBody request: CreateCategoryRequest) =
         ResponseEntity.ok(

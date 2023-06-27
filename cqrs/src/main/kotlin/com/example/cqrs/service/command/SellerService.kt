@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional
 class SellerService(
     private val sellerRepository: SellerRepository
 ) {
+    @Transactional(readOnly = true)
+    fun getSellers(): Iterable<SellerResult> =
+        sellerRepository.findAll().map { it.toDto() }
+
     fun createSeller(param: CreateSellerParam): SellerResult =
         sellerRepository.save(
             Seller(email = param.email, name = param.name)
