@@ -30,23 +30,37 @@ class HotdealItem(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no", nullable = false)
-    var category: Category
+    var category: Category,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "discount_no")
+    var discount: Discount? = null
 ) : AuditingEntity() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
 
         other as HotdealItem
 
         if (hotdealItemNo != other.hotdealItemNo) return false
         if (itemName != other.itemName) return false
+        if (itemPrice != other.itemPrice) return false
+        if (seller != other.seller) return false
+        if (category != other.category) return false
+        if (discount != other.discount) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = hotdealItemNo.hashCode()
+        var result = super.hashCode()
+        result = 31 * result + hotdealItemNo.hashCode()
         result = 31 * result + itemName.hashCode()
+        result = 31 * result + itemPrice.hashCode()
+        result = 31 * result + seller.hashCode()
+        result = 31 * result + category.hashCode()
+        result = 31 * result + (discount?.hashCode() ?: 0)
         return result
     }
 }
