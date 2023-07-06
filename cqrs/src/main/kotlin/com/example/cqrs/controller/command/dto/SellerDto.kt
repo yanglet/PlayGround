@@ -6,7 +6,6 @@ data class CreateSellerRequest(
 )
 
 data class UpdateSellerRequest(
-    val sellerNo: Long,
     val email: String,
     val name: String
 )

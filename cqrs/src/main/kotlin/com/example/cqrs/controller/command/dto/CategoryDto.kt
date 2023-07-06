@@ -5,7 +5,6 @@ data class CreateCategoryRequest(
 )
 
 data class UpdateCategoryRequest(
-    val categoryNo: Long,
     val categoryName: String
 )
 
