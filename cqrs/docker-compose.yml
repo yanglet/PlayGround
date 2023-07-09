@@ -18,15 +18,66 @@ services:
     # - file path
     networks:
       - cqrs-network
+
+  db-redis-cqrs:
+    image: redis
+    container_name: db-redis-cqrs
+    ports:
+      - '6379:6379'
+    restart: always
+    networks:
+      - cqrs-network
+
+  zookeeper:
+    container_name: cqrs-zookeeper
+    image: wurstmeister/zookeeper
+    ports:
+      - '2181:2181'
+    networks:
+      - cqrs-network
+
+  kafka:
+    container_name: cqrs-kafka
+    image: wurstmeister/kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - '9094:9094'
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://localhost:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://0.0.0.0:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CREATE_TOPICS: "cqrs_topic:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - cqrs-network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: cqrs-kafka-ui
+    ports:
+      - '8080:8080'
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    networks:
+      - cqrs-network
+
   cqrs-app:
     container_name: cqrs-app
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - '8080:8080'
+      - '9090:9090'
     depends_on:
       - db-mysql-cqrs
+      - db-redis-cqrs
     environment:
       spring.datasource.url: "jdbc:mysql://db-mysql-cqrs:3306/cqrs?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
     networks:
