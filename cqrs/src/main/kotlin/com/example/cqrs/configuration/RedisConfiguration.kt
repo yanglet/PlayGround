@@ -23,7 +23,6 @@ class RedisConfiguration {
     fun redisConnectionFactory(): LettuceConnectionFactory =
         LettuceConnectionFactory(host, port.toInt())
 
-
     @Bean
     fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
         val template = RedisTemplate<String, Any>()
@@ -31,6 +30,7 @@ class RedisConfiguration {
         template.keySerializer = StringRedisSerializer()
         return template
     }
+
     @Bean
     fun springSessionDefaultRedisSerializer(): RedisSerializer<Any?>? {
         return GenericJackson2JsonRedisSerializer()
