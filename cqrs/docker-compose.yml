@@ -124,6 +124,7 @@ services:
     depends_on:
       - db-mysql-cqrs
       - db-redis-cqrs
+      - kafka
     environment:
       spring.datasource.url: "jdbc:mysql://db-mysql-cqrs:3306/cqrs?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
     networks:
