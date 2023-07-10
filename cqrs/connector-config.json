@@ -1,0 +1,14 @@
+{
+  "name": "cqrs-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:mysql://db-mysql-cqrs:3306/cqrs",
+    "connection.user":"user",
+    "connection.password":"user",
+    "mode":"incrementing",
+    "incrementing.column.name" : "id",
+    "table.whitelist" : "CATEGORY,DISCOUNT,HOTDEAL_ITEM,SELLER",
+    "topic.prefix" : "cqrs-",
+    "tasks.max" : "1"
+  }
+}
