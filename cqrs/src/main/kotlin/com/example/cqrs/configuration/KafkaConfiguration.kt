@@ -21,7 +21,7 @@ class KafkaConfiguration {
     @Bean
     fun producerConfigs(): Map<String, Any> {
         val props: MutableMap<String, Any> = HashMap()
-        props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9094"
+        props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = "kafka:9092"
         props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         return props
@@ -35,7 +35,7 @@ class KafkaConfiguration {
     @Bean
     fun kafkaListenerContainerFactory(): KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
-        factory.setConsumerFactory(consumerFactory())
+        factory.consumerFactory = consumerFactory()
         factory.setConcurrency(3)
         factory.containerProperties.pollTimeout = 3000
         return factory
@@ -49,7 +49,8 @@ class KafkaConfiguration {
     @Bean
     fun consumerConfigs(): Map<String, Any> {
         val props: MutableMap<String, Any> = HashMap()
-        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9094"
+        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "kafka:9092"
+        props[ConsumerConfig.GROUP_ID_CONFIG] = "cqrs"
         props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         return props

@@ -9,6 +9,6 @@ class KafkaProducer(
     private val kafkaTemplate: KafkaTemplate<String, String>
 ) {
     fun send(text: String) {
-        kafkaTemplate.send("cqrs_topic", text)
+        kafkaTemplate.send("cqrs-topic", text)
     }
 }

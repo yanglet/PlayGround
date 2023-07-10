@@ -7,10 +7,8 @@ import org.springframework.stereotype.*
 @Component
 class KafkaConsumer {
     @KafkaListener(
-        id = "cqrs",
-        topics = ["cqrs_topic"],
-        clientIdPrefix = "clientId",
-        properties = ["enable.auto.commit:false", "auto.offset.reset:latest"]
+        topics = ["cqrs-topic"],
+        groupId = "cqrs"
     )
     fun listen(data: String) {
         println("Consumed data : $data")
