@@ -30,7 +30,7 @@ services:
 
   zookeeper:
     container_name: zookeeper
-    image: wurstmeister/zookeeper
+    image: confluentinc/cp-zookeeper:7.3.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
@@ -40,7 +40,7 @@ services:
 
   kafka:
     container_name: kafka
-    image: wurstmeister/kafka
+    image: confluentinc/cp-kafka:7.3.0
     depends_on:
       - zookeeper
     ports:
@@ -49,34 +49,55 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "cqrs-topic:1:1"
+      KAFKA_CREATE_TOPICS: "cqrs-topic:1:1,cqrs-history-topic:1:1"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     networks:
       - cqrs-network
 
   kafka-connect:
-    image: debezium/connect:1.9
+    image: confluentinc/cp-kafka-connect:7.3.0
     ports:
       - '8083:8083'
+    volumes:
+      - ./connectors:/etc/kafka-connect/jars/
     environment:
-      CONFIG_STORAGE_TOPIC: connect-configs
-      OFFSET_STORAGE_TOPIC: connect-offsets
-      STATUS_STORAGE_TOPIC: connect-statuses
-      BOOTSTRAP_SERVERS: kafka:9092
-      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_GROUP_ID: connect-group
+      CONNECT_REST_ADVERTISED_HOST_NAME: localhost
+      CONNECT_CONFIG_STORAGE_TOPIC: connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: connect-statuses
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+#      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+#      CONNECT_LOG4J_ROOT_LOGLEVEL: DEBUG
     depends_on:
       - kafka
-      - zookeeper
+      - schema-registry
       - db-mysql-cqrs
+    command:
+      - bash
+      - -c
+      - |
+        confluent-hub install --no-prompt debezium/debezium-connector-mysql:latest
+        /etc/confluent/docker/run
     networks:
       - cqrs-network
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.1
+    image: confluentinc/cp-schema-registry:7.3.0
     ports:
       - '8081:8081'
     depends_on:
-      - zookeeper
       - kafka
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
@@ -94,7 +115,7 @@ services:
     ports:
       - '8090:8080'
     environment:
-      KAFKA_CONNECT_URIS: http://debezium:8083
+      KAFKA_CONNECT_URIS: http://kafka-connect:8083
     networks:
       - cqrs-network
 
@@ -104,7 +125,6 @@ services:
     ports:
       - '8080:8080'
     depends_on:
-      - zookeeper
       - kafka
       - kafka-connect
       - schema-registry
