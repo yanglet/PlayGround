@@ -10,9 +10,19 @@
     "database.server.name": "cqrs_server",
     "topic.prefix" : "cqrs-",
     "tasks.max" : "1",
-    "database.include.list": "CATEGORY,DISCOUNT,HOTDEAL_ITEM,SELLER",
+    "database.include.list": "cqrs",
     "database.allowPublicKeyRetrieval":"true",
     "database.history.kafka.bootstrap.servers": "kafka:9092",
-    "database.history.kafka.topic": "cqrs-topic"
+    "database.history.kafka.topic": "cqrs-topic",
+    "schema.history.internal.kafka.bootstrap.servers" : "kafka:9092",
+    "schema.history.internal.kafka.topic": "cqrs-topic",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "transforms": "rename_topic",
+    "transforms.rename_topic.type" : "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.rename_topic.regex" : "cqrs(.*)",
+    "transforms.rename_topic.replacement" : "source_$1",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false"
   }
 }
