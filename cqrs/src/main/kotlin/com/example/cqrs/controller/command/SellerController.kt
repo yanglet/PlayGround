@@ -27,7 +27,7 @@ class SellerController(
             sellerService.createSeller(request.toParam()).toResponse()
         )
 
-    @PutMapping("/{sellerNo}")
+    @PatchMapping("/{sellerNo}")
     fun updateSeller(
         @PathVariable sellerNo: Long,
         @RequestBody request: UpdateSellerRequest
