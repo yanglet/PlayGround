@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+  mysql-master:
+    image: mysql:8.0
+    container_name: mysql-master
+    volumes:
+      - ./db/master/master.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./db/master/data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: yanglet
+      MYSQL_PORT: 3306
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_LOWER_CASE_TABLE_NAMES: 1
+    ports:
+      - '3306:3306'
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - yanglet-network
+
+  mysql-slave:
+    image: mysql:8.0
+    container_name: mysql-slave
+    volumes:
+      - ./db/slave/slave.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./db/slave/data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: yanglet
+      MYSQL_PORT: 3306
+      MYSQL_USER: slave_user
+      MYSQL_PASSWORD: slave_user
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_LOWER_CASE_TABLE_NAMES: 1
+    ports:
+      - '3307:3306'
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - yanglet-network
+
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql-master
+      - mysql-slave
+    networks:
+      - yanglet-network
+
+networks:
+  yanglet-network:
+    driver: bridge
