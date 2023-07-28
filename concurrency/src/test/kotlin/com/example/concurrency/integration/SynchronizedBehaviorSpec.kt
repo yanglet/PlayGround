@@ -4,7 +4,7 @@ import com.example.concurrency.exception.ItemNotFoundException
 import com.example.concurrency.repository.ItemRepository
 import com.example.concurrency.service.ItemService
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.TestPropertySource
@@ -33,7 +33,7 @@ class SynchronizedBehaviorSpec(
                 threadPool.submit {
                     try {
                         /** Synchronized */
-                        itemService.minusItemQuantityWithPessimisticLock(itemNo)
+                        itemService.minusItemQuantityWithSynchronized(itemNo)
                     } finally {
                         latch.countDown()
                     }
@@ -42,9 +42,9 @@ class SynchronizedBehaviorSpec(
 
             latch.await()
 
-            Then("상품의 재고는 30이 된다.") {
+            Then("상품의 재고는 30이 될 수 없다.") {
                 val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException()
-                item.itemQuantity shouldBe 30
+                item.itemQuantity shouldNotBe 30
             }
         }
     }
