@@ -2,9 +2,11 @@ package com.example.concurrency.repository.entity
 
 import com.example.concurrency.exception.ItemQuantityInsufficientException
 import jakarta.persistence.*
+import org.hibernate.annotations.DynamicUpdate
 
 @Entity
 @Table(name = "ITEM")
+@DynamicUpdate
 class Item (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ITEM_NO", nullable = false)
@@ -16,8 +18,8 @@ class Item (
     @Column(name = "ITEM_QUANTITY", nullable = false)
     var itemQuantity: Int,
 
-    @Version
-    var version: Long = 0
+//    @Version
+//    var version: Long = 0
 
 ) : AbstractEntity() {
     fun minusQuantity() {

@@ -1,5 +1,6 @@
 package com.example.concurrency.service
 
+import com.example.concurrency.aop.annotation.RedissonLock
 import com.example.concurrency.exception.ItemNotFoundException
 import com.example.concurrency.repository.ItemRepository
 import com.example.concurrency.repository.entity.Item
@@ -63,6 +64,19 @@ class ItemService(
 
     fun minusItemQuantityWithPessimisticLock(itemNo: Long) {
         val item = itemRepository.findByItemNoWithPessimisticLock(itemNo) ?: throw ItemNotFoundException()
+
+        log.info("[BEFORE] itemNo = ${item.itemNo}, itemQuantity = ${item.itemQuantity}")
+
+        item.minusQuantity()
+
+        val saveAndFlush = itemRepository.saveAndFlush(item)
+
+        log.info("[AFTER] itemNo = ${saveAndFlush.itemNo}, itemQuantity = ${saveAndFlush.itemQuantity}")
+    }
+
+    @RedissonLock(key = "#itemNo")
+    fun minusItemQuantityWithRedissonLock(itemNo: Long) {
+        val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException()
 
         log.info("[BEFORE] itemNo = ${item.itemNo}, itemQuantity = ${item.itemQuantity}")
 
