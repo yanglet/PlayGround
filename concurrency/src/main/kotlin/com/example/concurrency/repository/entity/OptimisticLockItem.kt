@@ -4,8 +4,8 @@ import com.example.concurrency.exception.*
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "ITEM")
-class Item (
+@Table(name = "OPTIMISTIC_LOCK_ITEM")
+class OptimisticLockItem (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ITEM_NO", nullable = false)
     var itemNo: Long = 0,
@@ -14,7 +14,10 @@ class Item (
     var itemName: String,
 
     @Column(name = "ITEM_QUANTITY", nullable = false)
-    var itemQuantity: Int
+    var itemQuantity: Int,
+
+    @Version
+    var version: Long = 0
 
 ) : AbstractEntity() {
     fun minusQuantity() {

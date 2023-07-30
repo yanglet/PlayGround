@@ -10,8 +10,4 @@ interface ItemRepository : JpaRepository<Item, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT item from Item item where item.itemNo = :itemNo")
     fun findByItemNoWithPessimisticLock(itemNo: Long): Item?
-
-    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
-    @Query("SELECT item from Item item where item.itemNo = :itemNo")
-    fun findByItemNoWithOptimisticLock(itemNo: Long): Item?
 }
