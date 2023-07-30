@@ -33,6 +33,10 @@ class RedissonLockAspect(
         val key = "${method.name}::${value}"
         log.info("key = {}", key)
 
+        return doLock(joinPoint, key)
+    }
+
+    fun doLock(joinPoint: ProceedingJoinPoint, key: String): Any? {
         val lock = redissonClient.getLock(key)
 
         try {
@@ -47,26 +51,6 @@ class RedissonLockAspect(
         } finally {
             lock.unlock()
         }
-    }
-
-    fun doLock(joinPoint: ProceedingJoinPoint, key: String): Any? {
-        val proceed: Any?
-        val lock = redissonClient.getLock(key)
-
-        try {
-            if (!lock.tryLock(5L, 3L, TimeUnit.SECONDS)) {
-                return false
-            }
-
-            proceed = proceed(joinPoint)
-        } catch (e: Exception) {
-            log.error("message = {}", e.message, e)
-            throw e
-        } finally {
-            lock.unlock()
-        }
-
-        return proceed
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
