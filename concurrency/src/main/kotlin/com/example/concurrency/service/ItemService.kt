@@ -8,12 +8,14 @@ import org.slf4j.*
 import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
+import java.util.concurrent.atomic.*
 
 @Service
 @Transactional
 class ItemService(
     private val itemRepository: ItemRepository,
-    private val optimisticLockItemRepository: OptimisticLockItemRepository
+    private val optimisticLockItemRepository: OptimisticLockItemRepository,
+    private val atomicItemRepository: AtomicItemRepository
 ) {
     val log: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -29,6 +31,12 @@ class ItemService(
         ).itemNo
     }
 
+    fun saveAtomicItem(itemName: String, itemQuantity: Int): Long {
+        return atomicItemRepository.save(
+            AtomicItem(itemName = itemName, itemQuantity = AtomicInteger(itemQuantity))
+        ).itemNo
+    }
+
     fun minusItemQuantity(itemNo: Long) {
         val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException()
 
@@ -37,6 +45,18 @@ class ItemService(
         item.minusQuantity()
 
         val saveAndFlush = itemRepository.saveAndFlush(item)
+
+        log.info("[AFTER] itemNo = ${saveAndFlush.itemNo}, itemQuantity = ${saveAndFlush.itemQuantity}")
+    }
+
+    fun minusAtomicItemQuantity(itemNo: Long) {
+        val item = atomicItemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException()
+
+        log.info("[BEFORE] itemNo = ${item.itemNo}, itemQuantity = ${item.itemQuantity}")
+
+        item.minusQuantity()
+
+        val saveAndFlush = atomicItemRepository.saveAndFlush(item)
 
         log.info("[AFTER] itemNo = ${saveAndFlush.itemNo}, itemQuantity = ${saveAndFlush.itemQuantity}")
     }

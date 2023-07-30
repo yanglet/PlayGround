@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 @Aspect
 @Component
 class RedissonLockAspect(
-    private val redissonClient: RedissonClient,
+    private val redissonClient: RedissonClient
 ) {
     val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -33,15 +33,31 @@ class RedissonLockAspect(
         val key = "${method.name}::${value}"
         log.info("key = {}", key)
 
-        return doLock(joinPoint, key)
+        val lock = redissonClient.getLock(key)
+
+        try {
+            if (!lock.tryLock(5L, 3L, TimeUnit.SECONDS)) {
+                return false
+            }
+
+            return proceed(joinPoint)
+        } catch (e: Exception) {
+            log.error("message = {}", e.message, e)
+            throw e
+        } finally {
+            lock.unlock()
+        }
     }
 
     fun doLock(joinPoint: ProceedingJoinPoint, key: String): Any? {
-        val lock = redissonClient.getLock(key)
         val proceed: Any?
+        val lock = redissonClient.getLock(key)
 
         try {
-            lock.tryLock(5L, 3L, TimeUnit.SECONDS)
+            if (!lock.tryLock(5L, 3L, TimeUnit.SECONDS)) {
+                return false
+            }
+
             proceed = proceed(joinPoint)
         } catch (e: Exception) {
             log.error("message = {}", e.message, e)
