@@ -1,20 +1,20 @@
 package com.example.concurrency.repository.entity
 
-import com.example.concurrency.exception.*
+import com.example.concurrency.exception.ItemQuantityInsufficientException
 import jakarta.persistence.*
-import java.util.concurrent.atomic.*
+import java.util.concurrent.atomic.AtomicInteger
 
 @Entity
 @Table(name = "ATOMIC_ITEM")
 class AtomicItem (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ITEM_NO", nullable = false)
+    @Column(name = "item_no", nullable = false)
     var itemNo: Long = 0,
 
-    @Column(name = "ITEM_NAME", nullable = false)
+    @Column(name = "item_name", nullable = false)
     var itemName: String,
 
-    @Column(name = "ITEM_QUANTITY", nullable = false)
+    @Column(name = "item_quantity", nullable = false)
     var itemQuantity: AtomicInteger
 
 ) : AbstractEntity() {

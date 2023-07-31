@@ -7,13 +7,13 @@ import jakarta.persistence.*
 @Table(name = "ITEM")
 class Item (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ITEM_NO", nullable = false)
+    @Column(name = "item_no", nullable = false)
     var itemNo: Long = 0,
 
-    @Column(name = "ITEM_NAME", nullable = false)
+    @Column(name = "item_name", nullable = false)
     var itemName: String,
 
-    @Column(name = "ITEM_QUANTITY", nullable = false)
+    @Column(name = "item_quantity", nullable = false)
     var itemQuantity: Int
 
 ) : AbstractEntity() {
