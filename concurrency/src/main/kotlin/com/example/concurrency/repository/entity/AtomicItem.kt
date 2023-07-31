@@ -1,5 +1,6 @@
 package com.example.concurrency.repository.entity
 
+import com.example.concurrency.converter.AtomicIntegerConverter
 import com.example.concurrency.exception.ItemQuantityInsufficientException
 import jakarta.persistence.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -14,8 +15,9 @@ class AtomicItem (
     @Column(name = "item_name", nullable = false)
     var itemName: String,
 
+    @Convert(converter = AtomicIntegerConverter::class)
     @Column(name = "item_quantity", nullable = false)
-    var itemQuantity: AtomicInteger
+    var itemQuantity: AtomicInteger = AtomicInteger(0)
 
 ) : AbstractEntity() {
     fun minusQuantity() {
