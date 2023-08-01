@@ -22,6 +22,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+	runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
