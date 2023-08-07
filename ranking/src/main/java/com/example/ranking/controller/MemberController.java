@@ -1,12 +1,11 @@
 package com.example.ranking.controller;
 
 import com.example.ranking.service.MemberService;
-import com.example.ranking.service.dto.MemberResponse;
+import com.example.ranking.service.dto.member.MemberRequest;
+import com.example.ranking.service.dto.member.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,10 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<List<MemberResponse>> getMembers() {
         return ResponseEntity.ok(memberService.getMembers());
+    }
+
+    @PostMapping
+    public ResponseEntity<MemberResponse> createMember(@RequestBody MemberRequest request) {
+        return ResponseEntity.ok(memberService.createMember(request));
     }
 }

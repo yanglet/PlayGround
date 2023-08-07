@@ -1,4 +1,4 @@
-package com.example.ranking.service.dto;
+package com.example.ranking.service.dto.member;
 
 import com.example.ranking.entity.Member;
 import lombok.*;
