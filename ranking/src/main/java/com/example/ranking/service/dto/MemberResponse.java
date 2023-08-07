@@ -1,12 +1,12 @@
 package com.example.ranking.service.dto;
 
 import com.example.ranking.entity.Member;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
-public class MemberDto {
+@Getter
+public class MemberResponse {
     private final Long memberNo;
     private final String memberName;
     private final Long score;
@@ -15,7 +15,7 @@ public class MemberDto {
     private final LocalDateTime updateDate;
     private final String updateOperator;
 
-    public MemberDto(Member member) {
+    public MemberResponse(Member member) {
         this.memberNo = member.getMemberNo();
         this.memberName = member.getMemberName();
         this.score = member.getScore();

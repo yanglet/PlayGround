@@ -1,7 +1,7 @@
 package com.example.ranking.service;
 
 import com.example.ranking.repository.MemberRepository;
-import com.example.ranking.service.dto.MemberDto;
+import com.example.ranking.service.dto.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +15,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public List<MemberDto> getMembers() {
+    public List<MemberResponse> getMembers() {
         return memberRepository.findAll()
                 .stream()
-                .map(MemberDto::new)
+                .map(MemberResponse::new)
                 .collect(Collectors.toList());
     }
 }

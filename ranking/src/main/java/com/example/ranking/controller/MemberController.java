@@ -1,7 +1,7 @@
 package com.example.ranking.controller;
 
 import com.example.ranking.service.MemberService;
-import com.example.ranking.service.dto.MemberDto;
+import com.example.ranking.service.dto.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<List<MemberDto>> getMembers() {
+    public ResponseEntity<List<MemberResponse>> getMembers() {
         return ResponseEntity.ok(memberService.getMembers());
     }
 }
