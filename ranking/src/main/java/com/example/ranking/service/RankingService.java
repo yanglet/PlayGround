@@ -22,7 +22,7 @@ public class RankingService {
     public List<RankingResponse> getRankings() {
         return Objects.requireNonNull(redisTemplate.opsForZSet().reverseRangeWithScores(REDIS_KEY, 0, 100000))
                 .stream()
-                .map(tuple -> new RankingResponse(tuple.getValue(), tuple.getScore().longValue()))
+                .map(tuple -> RankingResponse.of(tuple.getValue(), tuple.getScore().longValue()))
                 .collect(Collectors.toList());
     }
 }

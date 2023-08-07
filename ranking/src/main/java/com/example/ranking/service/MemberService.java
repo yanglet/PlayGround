@@ -21,7 +21,7 @@ public class MemberService {
     public List<MemberResponse> getMembers() {
         return memberRepository.findAll()
                 .stream()
-                .map(MemberResponse::new)
+                .map(MemberResponse::of)
                 .collect(Collectors.toList());
     }
 
@@ -30,6 +30,6 @@ public class MemberService {
         Member member = Member.of(request.getMemberName(), request.getScore());
         memberRepository.save(member);
         rankingService.createRanking(member.getMemberName(), member.getScore());
-        return new MemberResponse(member);
+        return MemberResponse.of(member);
     }
 }
