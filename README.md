@@ -7,3 +7,5 @@
 ## [레디스 sorted set](https://github.com/yanglet/PlayGround/tree/main/ranking)
 
 ## [Mysql master-slave replication 구성](https://github.com/yanglet/PlayGround/tree/main/mysql)
+
+## [Spring Event](https://github.com/yanglet/PlayGround/tree/main/springevent)
