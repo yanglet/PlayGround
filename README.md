@@ -5,3 +5,5 @@
 ## [동시성 제어](https://github.com/yanglet/PlayGround/tree/main/concurrency)
 
 ## [레디스 sorted set](https://github.com/yanglet/PlayGround/tree/main/ranking)
+
+## [Mysql master-slave replication 구성](https://github.com/yanglet/PlayGround/tree/main/mysql)
