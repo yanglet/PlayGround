@@ -1,5 +1,7 @@
 # PlayGround
 
+## [CQRS - Command and Query Responsibility Segregation (잠시 중단)](https://github.com/yanglet/PlayGround/tree/main/cqrs)
+
 ## [동시성 제어](https://github.com/yanglet/PlayGround/tree/main/concurrency)
 
 ## [레디스 sorted set](https://github.com/yanglet/PlayGround/tree/main/ranking)
