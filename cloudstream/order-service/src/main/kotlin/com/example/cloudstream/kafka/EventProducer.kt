@@ -10,7 +10,6 @@ const val BINDING_NAME = "create-order"
 class EventProducer(
     private val streamBridge: StreamBridge
 ) {
-
     fun send(message: Message<Any>) {
         streamBridge.send(
             BINDING_NAME,
