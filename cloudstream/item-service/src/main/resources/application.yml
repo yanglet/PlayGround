@@ -15,3 +15,14 @@ spring:
     username: user
     password: user
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    stream:
+      function:
+        definition: minusQuantity;
+      bindings:
+        minusQuantity-in-0:
+          destination: order-create
+      kafka:
+        binder:
+          brokers: "kafka-1:9092,kafka-2:9092,kafka-3:9092"

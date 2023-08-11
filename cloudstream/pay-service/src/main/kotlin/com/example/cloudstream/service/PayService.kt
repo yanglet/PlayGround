@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 class PayService {
     val log = LoggerFactory.getLogger(this.javaClass)
 
-    fun pay() {
-        log.info("결제가 완료되었습니다.")
+    fun pay(memberNo: Long) {
+        log.info("결제가 완료되었습니다. 회원번호 = {}", memberNo)
     }
 }

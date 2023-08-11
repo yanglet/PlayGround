@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class EventProducer(
+class OrderProducer(
     private val streamBridge: StreamBridge
 ) {
     fun send(message: Message<Any>, bindingName: String) {

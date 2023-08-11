@@ -1,6 +1,6 @@
-package com.example.cloudstream.event
+package com.example.cloudstream.kafka
 
-data class OrderEvent(
+data class OrderMessage(
     val memberNo: Long,
     val itemNo: Long,
     val quantity: Long
