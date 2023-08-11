@@ -15,3 +15,21 @@ spring:
     username: user
     password: user
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    stream:
+      bindings:
+        order-create: # bindingName
+          destination: order-create # 토픽 이름
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: kafka-1:9092,kafka-2:9093,kafka-3:9094
+        bindings:
+          order-create:
+            producer:
+              topic:
+                replication-factor: 1
+              configuration:
+                key:
+                  serializer: org.apache.kafka.common.serialization.StringSerializer
