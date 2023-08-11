@@ -1,21 +1,21 @@
 package com.example.cloudstream.kafka
 
 import org.springframework.cloud.stream.function.StreamBridge
+import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
-
-const val BINDING_NAME = "create-order"
+import java.util.*
 
 @Component
 class EventProducer(
     private val streamBridge: StreamBridge
 ) {
-    fun send(message: Message<Any>) {
+    fun send(message: Message<Any>, bindingName: String) {
         streamBridge.send(
-            BINDING_NAME,
+            bindingName,
             MessageBuilder
                 .withPayload(message.payLoad)
-//                .setHeader()
+                .setHeader(KafkaHeaders.KEY, UUID.randomUUID().toString())
                 .build()
         )
     }

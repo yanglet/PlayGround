@@ -1,6 +1,6 @@
 logging:
   level:
-    root: error
+    root: info
 
 spring:
   jpa:
@@ -11,7 +11,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: "jdbc:mysql://order-db:3307/order-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true"
+    url: "jdbc:mysql://order-db:3306/order-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true"
     username: user
     password: user
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -24,12 +24,10 @@ spring:
           content-type: application/json
       kafka:
         binder:
-          brokers: kafka-1:9092,kafka-2:9093,kafka-3:9094
+          brokers: "kafka-1:9092,kafka-2:9092,kafka-3:9092"
         bindings:
           order-create:
             producer:
-              topic:
-                replication-factor: 1
               configuration:
                 key:
                   serializer: org.apache.kafka.common.serialization.StringSerializer

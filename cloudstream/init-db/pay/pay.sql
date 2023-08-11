@@ -1,0 +1,7 @@
+CREATE TABLE `pay-db`.`PAY`
+(
+    `pay_no`      INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '결제 일련번호',
+    `number`      INT UNSIGNED NOT NULL COMMENT '그냥 번호',
+    `insert_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) COMMENT '등록일자',
+    PRIMARY KEY (`pay_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE='utf8mb4_general_ci' COMMENT='결제';

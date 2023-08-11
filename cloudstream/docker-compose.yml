@@ -16,6 +16,7 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      - --lower_case_table_names=1
     networks:
       - stream-network
 
@@ -34,6 +35,7 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      - --lower_case_table_names=1
     networks:
       - stream-network
 
@@ -41,7 +43,7 @@ services:
     image: mysql:8.0
     container_name: pay-db
     environment:
-      MYSQL_DATABASE: order-db
+      MYSQL_DATABASE: pay-db
       MYSQL_USER: user
       MYSQL_PASSWORD: user
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -50,6 +52,7 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      - --lower_case_table_names=1
     networks:
       - stream-network
 
