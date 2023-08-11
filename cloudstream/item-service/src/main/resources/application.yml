@@ -1,1 +1,17 @@
+logging:
+  level:
+    root: error
 
+spring:
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: "jdbc:mysql://item-db:3306/item-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true"
+    username: user
+    password: user
+    driver-class-name: com.mysql.cj.jdbc.Driver
