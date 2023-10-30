@@ -9,3 +9,5 @@
 ## [Mysql master-slave replication 구성](https://github.com/yanglet/PlayGround/tree/main/mysql)
 
 ## [Spring Event](https://github.com/yanglet/PlayGround/tree/main/springevent)
+
+## [Spring Cloud Stream Kafka](https://github.com/yanglet/PlayGround/tree/main/cloudstream)
