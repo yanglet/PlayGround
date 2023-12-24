@@ -1,5 +1,7 @@
 # PlayGround
 
+- [EDA에서 이벤트 소실없이 순서 보장]()
+
 - [동시성 제어](https://github.com/yanglet/PlayGround/tree/main/concurrency)
 
 - [레디스 sorted set](https://github.com/yanglet/PlayGround/tree/main/ranking)
