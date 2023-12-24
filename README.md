@@ -1,6 +1,6 @@
 # PlayGround
 
-- [EDA에서 이벤트 소실없이 순서 보장]()
+- [이벤트 기반 아키텍처에서 이벤트 소실없이 순서 보장]()
 
 - [동시성 제어](https://github.com/yanglet/PlayGround/tree/main/concurrency)
 
