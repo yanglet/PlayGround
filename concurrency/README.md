@@ -1,5 +1,11 @@
 ## 동시성 제어
 
+#### Volatile 타입 사용
+```
+메인 메모리에 저장되어 모든 쓰레드가 최신의 값을 바라볼 수 있게 강제하는 타입
+Atomic Class 에서 사용됨
+```
+
 #### Atomic Class 사용
 ```
 CAS (Compare And Swap) 알고리즘을 이용하여 thread safe 보장
